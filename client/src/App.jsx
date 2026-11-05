@@ -6,6 +6,7 @@ import { useAuthStore } from './store/authStore';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 
 // Lazy-loaded route pages for code splitting & bundle optimization
+const LandingPage = React.lazy(() => import('./pages/LandingPage'));
 const LoginPage = React.lazy(() => import('./pages/LoginPage'));
 const RegisterPage = React.lazy(() => import('./pages/RegisterPage'));
 const SettingsPage = React.lazy(() => import('./pages/SettingsPage'));
@@ -295,78 +296,6 @@ function Header() {
   );
 }
 
-function LandingHero() {
-  const { isAuthenticated } = useAuthStore();
-
-  return (
-    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <div className="p-8 sm:p-12 rounded-2xl bg-gradient-to-br from-emerald-950 via-slate-900 to-slate-950 text-white shadow-2xl relative overflow-hidden border border-emerald-800/40">
-        <div className="absolute top-0 right-0 -mt-10 -mr-10 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-        
-        <div className="relative z-10 max-w-2xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-medium mb-6">
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            Phase 2: Authentication & User Scoping Active
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4">
-            Financial Rigor, Integer Precision & Multi-Account Intelligence
-          </h2>
-          <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-8">
-            Engineered with 64-bit integer paise precision, dual-entry atomic transfer neutrality, idempotent budget alerts, and automated statement deduplication.
-          </p>
-
-          <div className="flex flex-wrap gap-3 mb-8">
-            {isAuthenticated ? (
-              <Link
-                to="/dashboard"
-                className="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-semibold text-sm flex items-center gap-2 shadow-lg shadow-emerald-500/25 transition-all"
-              >
-                <span>Go to Dashboard</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            ) : (
-              <>
-                <Link
-                  to="/register"
-                  className="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-semibold text-sm flex items-center gap-2 shadow-lg shadow-emerald-500/25 transition-all"
-                >
-                  <span>Create Free Account</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-                <Link
-                  to="/login"
-                  className="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-sm transition-all border border-slate-700"
-                >
-                  <span>Sign In</span>
-                </Link>
-              </>
-            )}
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-slate-800">
-            <div>
-              <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold">Precision Unit</p>
-              <p className="text-lg font-bold text-emerald-400 mt-1">Paise (₹0.01)</p>
-            </div>
-            <div>
-              <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold">Ledger Model</p>
-              <p className="text-lg font-bold text-white mt-1">Dual-Entry</p>
-            </div>
-            <div>
-              <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold">Transfer Impact</p>
-              <p className="text-lg font-bold text-emerald-400 mt-1">P&L Neutral</p>
-            </div>
-            <div>
-              <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold">Security</p>
-              <p className="text-lg font-bold text-white mt-1">BOLA Isolated</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
-  );
-}
-
 export default function App() {
   const initTheme = useThemeStore((state) => state.initTheme);
   const checkAuth = useAuthStore((state) => state.checkAuth);
@@ -383,7 +312,7 @@ export default function App() {
           <Header />
           <React.Suspense fallback={<PageLoader />}>
             <Routes>
-              <Route path="/" element={<LandingHero />} />
+              <Route path="/" element={<LandingPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route
