@@ -74,6 +74,9 @@ function Header() {
   const { notifications, unreadCount, fetchNotifications, markAsRead, markAllAsRead } =
     useNotificationStore();
   const [showNotifications, setShowNotifications] = React.useState(false);
+  const [showMoreNav, setShowMoreNav] = React.useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -82,106 +85,146 @@ function Header() {
     }
   }, [isAuthenticated, fetchNotifications]);
 
+  // Close menus on route change
+  useEffect(() => {
+    setShowMoreNav(false);
+    setMobileMenuOpen(false);
+    setShowNotifications(false);
+  }, [location.pathname]);
+
   const handleLogout = async () => {
     await logout();
     navigate('/login');
   };
 
+  const navItemClass = (path) =>
+    `px-3 py-1.5 rounded-lg text-xs lg:text-sm font-medium flex items-center gap-1.5 transition-colors whitespace-nowrap ${
+      location.pathname === path
+        ? 'bg-emerald-50 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-400 font-semibold'
+        : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+    }`;
+
   return (
-    <header className="border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        <Link to="/" className="flex items-center space-x-3 group">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center text-white shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform">
+    <header className="border-b border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md sticky top-0 z-40">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
+        
+        {/* Brand Logo */}
+        <Link to="/" className="flex items-center space-x-2.5 shrink-0 group">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center text-white shadow-md shadow-emerald-500/20 group-hover:scale-105 transition-transform">
             <Wallet className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-lg font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
+            <h1 className="text-base font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
               SmartSpend
-              <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800">
+              <span className="text-[10px] font-semibold px-1.5 py-0.2 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800">
                 v1.0.0
               </span>
             </h1>
-            <p className="text-[11px] text-slate-500 dark:text-slate-400">
-              Personal Wealth & Multi-Account Ledger
+            <p className="text-[10px] text-slate-500 dark:text-slate-400 hidden sm:block">
+              Personal Wealth Ledger
             </p>
           </div>
         </Link>
 
-        <div className="flex items-center space-x-3">
-          {isAuthenticated ? (
-            <div className="flex items-center space-x-2">
-              <Link
-                to="/dashboard"
-                className="px-3 py-1.5 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-1.5 transition-colors"
-              >
+        {/* Center / Navigation Bar */}
+        {isAuthenticated ? (
+          <div className="flex items-center gap-1">
+            {/* Primary Nav Links */}
+            <nav className="hidden md:flex items-center space-x-0.5 lg:space-x-1">
+              <Link to="/dashboard" className={navItemClass('/dashboard')}>
                 <LayoutDashboard className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                <span className="hidden sm:inline">Dashboard</span>
+                <span>Dashboard</span>
               </Link>
-              <Link
-                to="/transactions"
-                className="px-3 py-1.5 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-1.5 transition-colors"
-              >
+              <Link to="/transactions" className={navItemClass('/transactions')}>
                 <ArrowLeftRight className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                <span className="hidden sm:inline">Transactions</span>
+                <span>Transactions</span>
               </Link>
-              <Link
-                to="/budgets"
-                className="px-3 py-1.5 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-1.5 transition-colors"
-              >
-                <PieChart className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                <span className="hidden sm:inline">Budgets</span>
-              </Link>
-              <Link
-                to="/goals"
-                className="px-3 py-1.5 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-1.5 transition-colors"
-              >
-                <Target className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                <span className="hidden sm:inline">Goals</span>
-              </Link>
-              <Link
-                to="/reports"
-                className="px-3 py-1.5 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-1.5 transition-colors"
-              >
-                <BarChart3 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                <span className="hidden sm:inline">Reports</span>
-              </Link>
-              <Link
-                to="/recurring"
-                className="px-3 py-1.5 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-1.5 transition-colors"
-              >
-                <Repeat className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                <span className="hidden sm:inline">Recurring</span>
-              </Link>
-              <Link
-                to="/accounts"
-                className="px-3 py-1.5 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-1.5 transition-colors"
-              >
+              <Link to="/accounts" className={navItemClass('/accounts')}>
                 <Building2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                <span className="hidden sm:inline">Accounts</span>
+                <span>Accounts</span>
               </Link>
-              <Link
-                to="/categories"
-                className="px-3 py-1.5 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-1.5 transition-colors"
-              >
-                <Tag className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                <span className="hidden sm:inline">Categories</span>
+              <Link to="/budgets" className={navItemClass('/budgets')}>
+                <PieChart className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                <span>Budgets</span>
               </Link>
-              <Link
-                to="/import"
-                className="px-3 py-1.5 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-1.5 transition-colors"
-              >
-                <FileSpreadsheet className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                <span className="hidden sm:inline">Import</span>
+              <Link to="/goals" className={navItemClass('/goals')}>
+                <Target className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                <span>Goals</span>
               </Link>
-              <Link
-                to="/settings"
-                className="px-3 py-1.5 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-1.5 transition-colors"
-              >
-                <Settings className="w-4 h-4 text-slate-500" />
-                <span className="hidden sm:inline">Settings</span>
+              <Link to="/reports" className={navItemClass('/reports')}>
+                <BarChart3 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                <span>Reports</span>
               </Link>
 
-              {/* Notification Popover */}
+              {/* More Dropdown for Secondary Navigation */}
+              <div className="relative">
+                <button
+                  onClick={() => setShowMoreNav(!showMoreNav)}
+                  className={`px-2.5 py-1.5 rounded-lg text-xs lg:text-sm font-medium flex items-center gap-1 transition-colors ${
+                    ['/recurring', '/categories', '/import', '/settings'].includes(location.pathname)
+                      ? 'bg-emerald-50 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-400 font-semibold'
+                      : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                  }`}
+                >
+                  <span>More</span>
+                  <ChevronRight
+                    className={`w-3.5 h-3.5 transition-transform ${showMoreNav ? 'rotate-90' : ''}`}
+                  />
+                </button>
+
+                {showMoreNav && (
+                  <div className="absolute left-0 mt-2 w-48 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl z-50 p-2 space-y-1 animate-in fade-in zoom-in-95 duration-150">
+                    <Link
+                      to="/recurring"
+                      className="w-full px-3 py-2 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2"
+                    >
+                      <Repeat className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                      <span>Recurring Bills</span>
+                    </Link>
+                    <Link
+                      to="/categories"
+                      className="w-full px-3 py-2 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2"
+                    >
+                      <Tag className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                      <span>Categories</span>
+                    </Link>
+                    <Link
+                      to="/import"
+                      className="w-full px-3 py-2 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2"
+                    >
+                      <FileSpreadsheet className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                      <span>Import CSV</span>
+                    </Link>
+                    <div className="h-px bg-slate-100 dark:bg-slate-800 my-1" />
+                    <Link
+                      to="/settings"
+                      className="w-full px-3 py-2 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2"
+                    >
+                      <Settings className="w-4 h-4 text-slate-500" />
+                      <span>Settings</span>
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </nav>
+
+            {/* Mobile Menu Toggle Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+              title="Toggle Menu"
+            >
+              <LayoutDashboard className="w-5 h-5 text-emerald-600" />
+            </button>
+          </div>
+        ) : null}
+
+        {/* Right Controls */}
+        <div className="flex items-center space-x-2 shrink-0">
+          {isAuthenticated ? (
+            <div className="flex items-center space-x-1.5 sm:space-x-2">
+              
+              {/* Notifications Popover */}
               <div className="relative">
                 <button
                   onClick={() => setShowNotifications(!showNotifications)}
@@ -197,7 +240,7 @@ function Header() {
                 </button>
 
                 {showNotifications && (
-                  <div className="absolute right-0 mt-2 w-80 sm:w-96 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl z-50 p-4 space-y-3">
+                  <div className="absolute right-0 mt-2 w-80 sm:w-96 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl z-50 p-4 space-y-3 animate-in fade-in zoom-in-95 duration-150">
                     <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
                       <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
                         <Bell className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
@@ -247,12 +290,23 @@ function Header() {
                 )}
               </div>
 
-              <div className="h-5 w-px bg-slate-200 dark:bg-slate-800" />
-              <div className="flex items-center gap-2 pl-1">
-                <div className="w-8 h-8 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-semibold text-xs">
+              {/* Theme Toggle Button */}
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                title="Toggle Theme"
+              >
+                {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-600" />}
+              </button>
+
+              <div className="h-5 w-px bg-slate-200 dark:bg-slate-800 mx-1" />
+
+              {/* User Profile Pill */}
+              <div className="flex items-center gap-1.5 pl-1">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-bold text-xs shrink-0">
                   {user?.name?.charAt(0) || 'U'}
                 </div>
-                <span className="text-xs font-medium text-slate-700 dark:text-slate-300 hidden md:inline">
+                <span className="text-xs font-semibold text-slate-800 dark:text-slate-200 hidden lg:inline max-w-[100px] truncate">
                   {user?.name}
                 </span>
                 <button
@@ -263,6 +317,7 @@ function Header() {
                   <LogOut className="w-4 h-4" />
                 </button>
               </div>
+
             </div>
           ) : (
             <div className="flex items-center space-x-2">
@@ -278,20 +333,64 @@ function Header() {
               >
                 Get Started
               </Link>
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-xl text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                title="Toggle Theme"
+              >
+                {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-600" />}
+              </button>
             </div>
           )}
-
-          <div className="h-5 w-px bg-slate-200 dark:bg-slate-800" />
-
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-xl text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-            title="Toggle Theme"
-          >
-            {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-600" />}
-          </button>
         </div>
+
       </div>
+
+      {/* Mobile Navigation Drawer */}
+      {isAuthenticated && mobileMenuOpen && (
+        <div className="md:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-3 space-y-1 animate-in slide-in-from-top-2 duration-200">
+          <Link to="/dashboard" className={navItemClass('/dashboard')}>
+            <LayoutDashboard className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            <span>Dashboard</span>
+          </Link>
+          <Link to="/transactions" className={navItemClass('/transactions')}>
+            <ArrowLeftRight className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            <span>Transactions</span>
+          </Link>
+          <Link to="/accounts" className={navItemClass('/accounts')}>
+            <Building2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            <span>Accounts</span>
+          </Link>
+          <Link to="/budgets" className={navItemClass('/budgets')}>
+            <PieChart className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            <span>Budgets</span>
+          </Link>
+          <Link to="/goals" className={navItemClass('/goals')}>
+            <Target className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            <span>Goals</span>
+          </Link>
+          <Link to="/reports" className={navItemClass('/reports')}>
+            <BarChart3 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            <span>Reports</span>
+          </Link>
+          <Link to="/recurring" className={navItemClass('/recurring')}>
+            <Repeat className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            <span>Recurring Bills</span>
+          </Link>
+          <Link to="/categories" className={navItemClass('/categories')}>
+            <Tag className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            <span>Categories</span>
+          </Link>
+          <Link to="/import" className={navItemClass('/import')}>
+            <FileSpreadsheet className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            <span>Import CSV</span>
+          </Link>
+          <Link to="/settings" className={navItemClass('/settings')}>
+            <Settings className="w-4 h-4 text-slate-500" />
+            <span>Settings</span>
+          </Link>
+        </div>
+      )}
     </header>
   );
 }
