@@ -7,7 +7,6 @@ import { SavingsGoal } from '../../models/SavingsGoal.js';
 import { User } from '../../models/User.js';
 import { TRANSACTION_TYPES } from '../../config/constants.js';
 import { formatINR, paiseToRupees, calculateNetCashFlow, calculateSavingsRate } from '../../utils/money.js';
-import { getMonthlyMetrics } from '../finance/calculationEngine.js';
 
 /**
  * Builds an ExcelJS multi-sheet workbook covering overview, accounts, transactions, budgets, and savings goals (DEC-011)
