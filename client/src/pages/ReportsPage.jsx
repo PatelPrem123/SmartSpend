@@ -58,9 +58,13 @@ export default function ReportsPage() {
   const fetchCategoryData = async () => {
     try {
       const res = await axios.get('/api/v1/reports/categories?type=expense');
-      setCategoryData(res.data.distribution || []);
+      const items =
+        res.data?.distribution?.items ||
+        (Array.isArray(res.data?.distribution) ? res.data.distribution : []);
+      setCategoryData(items);
     } catch (err) {
       console.error('Failed to load category distribution:', err);
+      setCategoryData([]);
     }
   };
 
@@ -327,25 +331,25 @@ export default function ReportsPage() {
           </div>
 
           <div className="space-y-3 pt-2">
-            {categoryData.length === 0 ? (
+            {!Array.isArray(categoryData) || categoryData.length === 0 ? (
               <p className="text-xs text-slate-400 text-center py-8">
                 No expense categories recorded yet.
               </p>
             ) : (
-              categoryData.slice(0, 8).map((cat) => (
-                <div key={cat.categoryId || cat.name} className="space-y-1 text-xs">
+              categoryData.slice(0, 8).map((cat, idx) => (
+                <div key={cat.categoryId || cat.name || idx} className="space-y-1 text-xs">
                   <div className="flex items-center justify-between">
                     <span className="font-semibold text-slate-800 dark:text-slate-200">
-                      {cat.name}
+                      {cat.categoryName || cat.name || 'Uncategorized'}
                     </span>
                     <span className="font-bold text-slate-900 dark:text-white">
-                      {formatCurrency(cat.totalMinor)} ({cat.percentage}%)
+                      {formatCurrency(cat.totalMinor)} ({cat.percentage || 0}%)
                     </span>
                   </div>
                   <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
                     <div
                       className="bg-emerald-500 h-1.5 rounded-full"
-                      style={{ width: `${cat.percentage}%` }}
+                      style={{ width: `${cat.percentage || 0}%` }}
                     />
                   </div>
                 </div>
