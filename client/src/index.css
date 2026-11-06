@@ -3,23 +3,8 @@
 @tailwind utilities;
 
 @layer base {
-  html {
-    color-scheme: light dark;
-  }
-  
-  html.dark {
-    color-scheme: dark;
-    background-color: #020617;
-  }
-  
-  html:not(.dark) {
-    color-scheme: light;
-    background-color: #f8fafc;
-  }
-
   body {
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    min-height: 100vh;
   }
   
   code, pre {

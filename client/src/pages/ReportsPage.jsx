@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { api } from '../services/api';
 import {
   FileText,
   FileSpreadsheet,
@@ -17,7 +16,6 @@ import {
   ShieldCheck,
   ArrowRight,
   Filter,
-  Loader2,
 } from 'lucide-react';
 import {
   BarChart,
@@ -48,10 +46,10 @@ export default function ReportsPage() {
     setIsLoading(true);
     setError(null);
     try {
-      const res = await api.get(`/reports/annual-summary?year=${year}`);
-      setAnnualSummary(res);
+      const res = await axios.get(`/api/v1/reports/annual-summary?year=${year}`);
+      setAnnualSummary(res.data);
     } catch (err) {
-      setError(err.message || 'Failed to load annual summary');
+      setError(err.response?.data?.error?.message || 'Failed to load annual summary');
     } finally {
       setIsLoading(false);
     }
@@ -59,36 +57,31 @@ export default function ReportsPage() {
 
   const fetchCategoryData = async () => {
     try {
-      const res = await api.get('/reports/categories?type=expense');
-      const items = res?.distribution?.items || res?.distribution || [];
-      setCategoryData(Array.isArray(items) ? items : []);
+      const res = await axios.get('/api/v1/reports/categories?type=expense');
+      setCategoryData(res.data.distribution || []);
     } catch (err) {
       console.error('Failed to load category distribution:', err);
-      setCategoryData([]);
     }
   };
 
   const handleDownload = async (format) => {
     setIsExporting(true);
     try {
-      let endpoint = '';
+      let url = '';
       let filename = '';
 
       if (format === 'excel') {
-        endpoint = '/reports/export/excel';
+        url = '/api/v1/reports/export/excel';
         filename = `smartspend-report-${selectedYear}.xlsx`;
       } else if (format === 'pdf') {
-        endpoint = '/reports/export/pdf';
+        url = '/api/v1/reports/export/pdf';
         filename = `smartspend-statement-${selectedYear}.pdf`;
       } else if (format === 'csv') {
-        endpoint = '/imports/csv/export';
+        url = '/api/v1/imports/csv/export';
         filename = `smartspend-ledger-${selectedYear}.csv`;
       }
 
-      const res = await axios.get(`/api/v1${endpoint}`, {
-        withCredentials: true,
-        responseType: 'blob',
-      });
+      const res = await axios.get(url, { responseType: 'blob' });
       const blob = new Blob([res.data]);
       const downloadUrl = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -110,20 +103,19 @@ export default function ReportsPage() {
       style: 'currency',
       currency: 'INR',
       maximumFractionDigits: 0,
-    }).format((minor || 0) / 100);
+    }).format(minor / 100);
   };
 
-  // Prepare chart data defensively
-  const chartData =
-    annualSummary?.months?.map((m) => ({
-      name: m.monthName || m.month,
-      Income: (m.incomeMinor || 0) / 100,
-      Expenses: (m.expenseMinor || 0) / 100,
-      Net: (m.netCashFlowMinor || 0) / 100,
-    })) || [];
+  // Prepare chart data
+  const chartData = annualSummary?.months?.map((m) => ({
+    name: m.monthName,
+    Income: m.incomeMinor / 100,
+    Expenses: m.expenseMinor / 100,
+    Net: m.netCashFlowMinor / 100,
+  })) || [];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-in fade-in duration-300">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-fade-in">
       {/* Header & Export Actions */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-6">
         <div>
@@ -214,7 +206,7 @@ export default function ReportsPage() {
             </div>
             <div
               className={`text-2xl font-bold mt-2 ${
-                (annualSummary.annualTotals.netCashFlowMinor || 0) >= 0
+                annualSummary.annualTotals.netCashFlowMinor >= 0
                   ? 'text-emerald-600 dark:text-emerald-400'
                   : 'text-rose-600 dark:text-rose-400'
               }`}
@@ -230,7 +222,7 @@ export default function ReportsPage() {
               <Percent className="w-4 h-4 text-purple-500" />
             </div>
             <div className="text-2xl font-bold text-purple-600 dark:text-purple-400 mt-2">
-              {annualSummary.annualTotals.savingsRate || 0}%
+              {annualSummary.annualTotals.savingsRate}%
             </div>
             <div className="text-xs text-slate-500 mt-1">Zero-division guard compliant</div>
           </div>
@@ -248,35 +240,29 @@ export default function ReportsPage() {
         </div>
 
         <div className="h-72 w-full pt-4">
-          {chartData.length > 0 ? (
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
-                <XAxis dataKey="name" tick={{ fontSize: 11 }} />
-                <YAxis
-                  tick={{ fontSize: 11 }}
-                  tickFormatter={(val) => `₹${(val / 1000).toFixed(0)}k`}
-                />
-                <Tooltip
-                  formatter={(val) => [`₹${val.toLocaleString('en-IN')}`, '']}
-                  contentStyle={{
-                    backgroundColor: '#0f172a',
-                    borderRadius: '12px',
-                    border: '1px solid #334155',
-                    color: '#fff',
-                    fontSize: '12px',
-                  }}
-                />
-                <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
-                <Bar dataKey="Income" fill="#10b981" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="Expenses" fill="#f43f5e" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          ) : (
-            <div className="h-full flex items-center justify-center text-xs text-slate-400">
-              No financial data available for {selectedYear}
-            </div>
-          )}
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
+              <XAxis dataKey="name" tick={{ fontSize: 11 }} />
+              <YAxis
+                tick={{ fontSize: 11 }}
+                tickFormatter={(val) => `₹${(val / 1000).toFixed(0)}k`}
+              />
+              <Tooltip
+                formatter={(val) => [`₹${val.toLocaleString('en-IN')}`, '']}
+                contentStyle={{
+                  backgroundColor: '#0f172a',
+                  borderRadius: '12px',
+                  border: '1px solid #334155',
+                  color: '#fff',
+                  fontSize: '12px',
+                }}
+              />
+              <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
+              <Bar dataKey="Income" fill="#10b981" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="Expenses" fill="#f43f5e" radius={[4, 4, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
       </div>
 
@@ -300,39 +286,31 @@ export default function ReportsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
-                {annualSummary?.months && annualSummary.months.length > 0 ? (
-                  annualSummary.months.map((m) => (
-                    <tr key={m.month} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30">
-                      <td className="py-2.5 px-3 font-semibold text-slate-800 dark:text-slate-200">
-                        {m.monthName || m.month} {selectedYear}
-                      </td>
-                      <td className="py-2.5 px-3 text-right text-emerald-600 dark:text-emerald-400 font-medium">
-                        {formatCurrency(m.incomeMinor)}
-                      </td>
-                      <td className="py-2.5 px-3 text-right text-rose-500 font-medium">
-                        {formatCurrency(m.expenseMinor)}
-                      </td>
-                      <td
-                        className={`py-2.5 px-3 text-right font-bold ${
-                          (m.netCashFlowMinor || 0) >= 0
-                            ? 'text-emerald-600 dark:text-emerald-400'
-                            : 'text-rose-600 dark:text-rose-400'
-                        }`}
-                      >
-                        {formatCurrency(m.netCashFlowMinor)}
-                      </td>
-                      <td className="py-2.5 px-3 text-right font-semibold text-slate-700 dark:text-slate-300">
-                        {m.savingsRate || 0}%
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="5" className="py-6 text-center text-slate-400">
-                      No monthly statements found for {selectedYear}
+                {annualSummary?.months?.map((m) => (
+                  <tr key={m.month} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30">
+                    <td className="py-2.5 px-3 font-semibold text-slate-800 dark:text-slate-200">
+                      {m.monthName} {selectedYear}
+                    </td>
+                    <td className="py-2.5 px-3 text-right text-emerald-600 dark:text-emerald-400 font-medium">
+                      {formatCurrency(m.incomeMinor)}
+                    </td>
+                    <td className="py-2.5 px-3 text-right text-rose-500 font-medium">
+                      {formatCurrency(m.expenseMinor)}
+                    </td>
+                    <td
+                      className={`py-2.5 px-3 text-right font-bold ${
+                        m.netCashFlowMinor >= 0
+                          ? 'text-emerald-600 dark:text-emerald-400'
+                          : 'text-rose-600 dark:text-rose-400'
+                      }`}
+                    >
+                      {formatCurrency(m.netCashFlowMinor)}
+                    </td>
+                    <td className="py-2.5 px-3 text-right font-semibold text-slate-700 dark:text-slate-300">
+                      {m.savingsRate}%
                     </td>
                   </tr>
-                )}
+                ))}
               </tbody>
             </table>
           </div>
@@ -349,29 +327,29 @@ export default function ReportsPage() {
           </div>
 
           <div className="space-y-3 pt-2">
-            {Array.isArray(categoryData) && categoryData.length > 0 ? (
+            {categoryData.length === 0 ? (
+              <p className="text-xs text-slate-400 text-center py-8">
+                No expense categories recorded yet.
+              </p>
+            ) : (
               categoryData.slice(0, 8).map((cat) => (
-                <div key={cat.categoryId || cat.categoryName || cat.name} className="space-y-1 text-xs">
+                <div key={cat.categoryId || cat.name} className="space-y-1 text-xs">
                   <div className="flex items-center justify-between">
                     <span className="font-semibold text-slate-800 dark:text-slate-200">
-                      {cat.categoryName || cat.name || 'Uncategorized'}
+                      {cat.name}
                     </span>
                     <span className="font-bold text-slate-900 dark:text-white">
-                      {formatCurrency(cat.totalMinor)} ({cat.percentage || 0}%)
+                      {formatCurrency(cat.totalMinor)} ({cat.percentage}%)
                     </span>
                   </div>
                   <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
                     <div
-                      className="bg-emerald-500 h-1.5 rounded-full transition-all duration-300"
-                      style={{ width: `${Math.min(100, cat.percentage || 0)}%` }}
+                      className="bg-emerald-500 h-1.5 rounded-full"
+                      style={{ width: `${cat.percentage}%` }}
                     />
                   </div>
                 </div>
               ))
-            ) : (
-              <p className="text-xs text-slate-400 text-center py-8">
-                No expense categories recorded yet.
-              </p>
             )}
           </div>
         </div>
