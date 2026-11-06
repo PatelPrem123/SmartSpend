@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useThemeStore } from './store/themeStore';
 import { useAuthStore } from './store/authStore';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
+import { ErrorBoundary } from './components/common/ErrorBoundary';
 
 // Lazy-loaded route pages for code splitting & bundle optimization
 const LandingPage = React.lazy(() => import('./pages/LandingPage'));
@@ -409,93 +410,95 @@ export default function App() {
       <BrowserRouter>
         <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
           <Header />
-          <React.Suspense fallback={<PageLoader />}>
-            <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
-              <Route
-                path="/dashboard"
-                element={
-                  <ProtectedRoute>
-                    <DashboardPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/accounts"
-                element={
-                  <ProtectedRoute>
-                    <AccountsPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/transactions"
-                element={
-                  <ProtectedRoute>
-                    <TransactionsPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/budgets"
-                element={
-                  <ProtectedRoute>
-                    <BudgetsPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/goals"
-                element={
-                  <ProtectedRoute>
-                    <GoalsPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/reports"
-                element={
-                  <ProtectedRoute>
-                    <ReportsPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/recurring"
-                element={
-                  <ProtectedRoute>
-                    <RecurringPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/import"
-                element={
-                  <ProtectedRoute>
-                    <CsvImportPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/categories"
-                element={
-                  <ProtectedRoute>
-                    <CategoriesPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/settings"
-                element={
-                  <ProtectedRoute>
-                    <SettingsPage />
-                  </ProtectedRoute>
-                }
-              />
-            </Routes>
-          </React.Suspense>
+          <ErrorBoundary>
+            <React.Suspense fallback={<PageLoader />}>
+              <Routes>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route
+                  path="/dashboard"
+                  element={
+                    <ProtectedRoute>
+                      <DashboardPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/accounts"
+                  element={
+                    <ProtectedRoute>
+                      <AccountsPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/transactions"
+                  element={
+                    <ProtectedRoute>
+                      <TransactionsPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/budgets"
+                  element={
+                    <ProtectedRoute>
+                      <BudgetsPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/goals"
+                  element={
+                    <ProtectedRoute>
+                      <GoalsPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/reports"
+                  element={
+                    <ProtectedRoute>
+                      <ReportsPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/recurring"
+                  element={
+                    <ProtectedRoute>
+                      <RecurringPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/import"
+                  element={
+                    <ProtectedRoute>
+                      <CsvImportPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/categories"
+                  element={
+                    <ProtectedRoute>
+                      <CategoriesPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/settings"
+                  element={
+                    <ProtectedRoute>
+                      <SettingsPage />
+                    </ProtectedRoute>
+                  }
+                />
+              </Routes>
+            </React.Suspense>
+          </ErrorBoundary>
         </div>
       </BrowserRouter>
     </QueryClientProvider>
