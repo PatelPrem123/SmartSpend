@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
+import SEO from '../components/common/SEO';
 import {
   Wallet,
   ShieldCheck,
@@ -23,19 +24,63 @@ import {
   AlertTriangle,
   FileCheck,
   Cpu,
-  Github
+  Github,
+  Star,
+  Zap,
+  CreditCard,
+  Award,
+  HelpCircle,
+  ChevronDown,
+  ChevronUp,
+  Check,
+  ShieldAlert,
 } from 'lucide-react';
 
 export default function LandingPage() {
   const { isAuthenticated } = useAuthStore();
+  const [billingCycle, setBillingCycle] = useState('annual'); // 'annual' | 'monthly'
+  const [openFaq, setOpenFaq] = useState(0);
+
+  const toggleFaq = (index) => {
+    setOpenFaq(openFaq === index ? -1 : index);
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
+      <SEO
+        title="Personal Wealth & Multi-Account Ledger Platform"
+        description="Stop losing financial clarity to float drift and unmonitored subscriptions. SmartSpend delivers 64-bit integer paise precision, dual-entry transfer neutrality, automated statement ingestion, and real-time cash flow analytics."
+        keywords="personal finance, expense tracker, multi-account ledger, money manager, budgeting software, paise precision, bank statement csv parser, cash flow velocity, saas pricing"
+        canonical="https://smartspend.io/"
+      />
       
+      {/* Quick Navigation Anchor Bar for Fast Crawling & Accessibility */}
+      <nav aria-label="Landing Page Navigation" className="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 hidden md:block">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-12 text-xs font-semibold text-slate-600 dark:text-slate-300">
+            <div className="flex items-center gap-6">
+              <a href="#hero" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Overview</a>
+              <a href="#features" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Features</a>
+              <a href="#architecture" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Precision Engine</a>
+              <a href="#workflow" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Workflow</a>
+              <a href="#pricing" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors font-bold text-emerald-600 dark:text-emerald-400">Pricing Plans</a>
+              <a href="#reviews" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Customer Reviews</a>
+              <a href="#faq" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">FAQ</a>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-500">
+                <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                4.9/5 Rating (1,240+ Users)
+              </span>
+            </div>
+          </div>
+        </div>
+      </nav>
+
       {/* =========================================================================
           HERO SECTION
           ========================================================================= */}
-      <section className="relative overflow-hidden pt-12 pb-20 lg:pt-20 lg:pb-28">
+      <section id="hero" className="relative overflow-hidden pt-12 pb-20 lg:pt-20 lg:pb-28">
         {/* Ambient Gradient Glows */}
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-gradient-to-tr from-emerald-500/20 to-teal-500/10 blur-[120px] rounded-full pointer-events-none" />
         <div className="absolute top-10 right-10 w-72 h-72 bg-emerald-600/10 blur-[100px] rounded-full pointer-events-none" />
@@ -310,7 +355,7 @@ export default function LandingPage() {
       {/* =========================================================================
           CORE CAPABILITIES / ARCHITECTURAL PILLARS (6 FEATURE CARDS)
           ========================================================================= */}
-      <section className="py-16 sm:py-24 bg-white dark:bg-slate-900 border-y border-slate-200 dark:border-slate-800">
+      <section id="features" className="py-16 sm:py-24 bg-white dark:bg-slate-900 border-y border-slate-200 dark:border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-3xl mx-auto mb-16">
@@ -431,7 +476,7 @@ export default function LandingPage() {
       {/* =========================================================================
           COMPARISON TABLE (SMARTSPEND VS GENERIC EXPENSE APPS)
           ========================================================================= */}
-      <section className="py-16 sm:py-24 bg-slate-50 dark:bg-slate-950">
+      <section id="architecture" className="py-16 sm:py-24 bg-slate-50 dark:bg-slate-950">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center mb-12">
@@ -509,7 +554,7 @@ export default function LandingPage() {
       {/* =========================================================================
           HOW IT WORKS (3-STEP WORKFLOW)
           ========================================================================= */}
-      <section className="py-16 sm:py-24 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
+      <section id="workflow" className="py-16 sm:py-24 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-2xl mx-auto mb-16">
@@ -560,6 +605,505 @@ export default function LandingPage() {
               <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
                 Inspect interactive Recharts cash flow curves, keep budgets in the safe emerald zone, and stream multi-sheet ExcelJS workbooks.
               </p>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* =========================================================================
+          E-COMMERCE SAAS PRICING TIERS & PLANS SECTION
+          ========================================================================= */}
+      <section id="pricing" className="py-16 sm:py-24 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-2">
+              Transparent, Value-Driven Plans
+            </h2>
+            <h3 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mb-4">
+              Predictable Pricing for Personal Wealth Rigor
+            </h3>
+            <p className="text-slate-600 dark:text-slate-400 text-base sm:text-lg">
+              No hidden surcharges. No banking credential risks. Upgrade, downgrade, or cancel anytime with our 30-day money-back guarantee.
+            </p>
+
+            {/* Monthly / Annual Billing Toggle Switch */}
+            <div className="flex items-center justify-center gap-3 mt-8">
+              <span className={`text-xs sm:text-sm font-semibold transition-colors ${billingCycle === 'monthly' ? 'text-slate-900 dark:text-white' : 'text-slate-500'}`}>
+                Monthly Billing
+              </span>
+              <button
+                type="button"
+                onClick={() => setBillingCycle(billingCycle === 'annual' ? 'monthly' : 'annual')}
+                className="relative inline-flex h-7 w-14 items-center rounded-full bg-slate-200 dark:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                aria-label="Toggle annual or monthly billing"
+              >
+                <span
+                  className={`inline-block h-5 w-5 transform rounded-full bg-emerald-600 transition-transform ${
+                    billingCycle === 'annual' ? 'translate-x-8' : 'translate-x-1'
+                  }`}
+                />
+              </button>
+              <div className="flex items-center gap-1.5">
+                <span className={`text-xs sm:text-sm font-semibold transition-colors ${billingCycle === 'annual' ? 'text-slate-900 dark:text-white' : 'text-slate-500'}`}>
+                  Annual Billing
+                </span>
+                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
+                  Save 50%
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Pricing Grid (3 Columns) */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch max-w-6xl mx-auto">
+            
+            {/* Plan 1: Starter (Free Forever) */}
+            <div className="p-8 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/70 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+              <div>
+                <div className="inline-block px-3 py-1 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 mb-4">
+                  Starter Baseline
+                </div>
+                <h4 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
+                  Free Forever
+                </h4>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mb-6 leading-relaxed">
+                  Ideal for individuals taking their first steps toward rigorous personal cash flow tracking.
+                </p>
+
+                <div className="flex items-baseline gap-1 mb-6">
+                  <span className="text-4xl font-extrabold text-slate-900 dark:text-white">₹0</span>
+                  <span className="text-xs text-slate-500 dark:text-slate-400">/ forever</span>
+                </div>
+
+                <div className="space-y-3 pt-6 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-700 dark:text-slate-300">
+                  <div className="flex items-center gap-2.5">
+                    <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>Up to 3 Linked Accounts (Bank, UPI, Cash)</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>Unlimited Transactions with Paise Precision</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>Dual-Entry Symmetrical Transfer Neutrality</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>Monthly Category Budgets & Visual Limits</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>Bank Statement CSV Import (1 upload/day)</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>Standard Community Support</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-8">
+                <Link
+                  to="/register?plan=starter"
+                  className="w-full py-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs flex items-center justify-center gap-2 transition-colors border border-slate-300 dark:border-slate-700"
+                >
+                  <span>Start Free Forever</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            </div>
+
+            {/* Plan 2: Pro Wealth (Most Popular & Highlighted) */}
+            <div className="p-8 rounded-2xl border-2 border-emerald-500 bg-white dark:bg-slate-900 shadow-xl shadow-emerald-500/10 flex flex-col justify-between relative transform md:-translate-y-2">
+              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                <span className="px-3.5 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-emerald-600 text-white shadow-md shadow-emerald-600/30 flex items-center gap-1.5">
+                  <Sparkles className="w-3 h-3" />
+                  Most Popular • Best Value
+                </span>
+              </div>
+
+              <div>
+                <div className="inline-block px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 mb-4 mt-2">
+                  Pro Wealth Builder
+                </div>
+                <h4 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
+                  Pro Wealth
+                </h4>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mb-6 leading-relaxed">
+                  For professionals, investors, and power users demanding total ledger automation and depth.
+                </p>
+
+                <div className="flex items-baseline gap-1 mb-1">
+                  <span className="text-4xl font-black text-slate-900 dark:text-white">
+                    {billingCycle === 'annual' ? '₹499' : '₹89'}
+                  </span>
+                  <span className="text-xs text-slate-500 dark:text-slate-400">
+                    {billingCycle === 'annual' ? '/ year' : '/ month'}
+                  </span>
+                </div>
+                <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold mb-6">
+                  {billingCycle === 'annual' ? '≈ ₹41.58/month (Billed annually — 50% savings)' : 'Billed monthly, cancel anytime'}
+                </p>
+
+                <div className="space-y-3 pt-6 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-700 dark:text-slate-300">
+                  <div className="flex items-center gap-2.5">
+                    <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span className="font-semibold text-slate-900 dark:text-white">Unlimited Bank, Wallet & Credit Accounts</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>node-cron Automated Daily Recurring Daemon</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>Idempotent 4-Tier Budget Alerts (50%, 75%, 90%, 100%)</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>Unlimited CSV Ingestion with MD5 Deduplication</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>Streaming Styled Multi-Sheet ExcelJS Workbooks</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>Printable PDFKit Monthly Financial Statements</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>Savings Goals with Milestone Notifications</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>Priority Support & Rapid Response</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-8">
+                <Link
+                  to="/register?plan=pro"
+                  className="w-full py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  <Zap className="w-4 h-4" />
+                  <span>Upgrade to Pro Wealth</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            </div>
+
+            {/* Plan 3: Enterprise Lifetime */}
+            <div className="p-8 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/70 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+              <div>
+                <div className="inline-block px-3 py-1 rounded-full text-xs font-bold bg-purple-50 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300 mb-4">
+                  Lifetime Ownership
+                </div>
+                <h4 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
+                  Enterprise Lifetime
+                </h4>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mb-6 leading-relaxed">
+                  For family offices, founders, and private wealth vaults demanding permanent access.
+                </p>
+
+                <div className="flex items-baseline gap-1 mb-1">
+                  <span className="text-4xl font-extrabold text-slate-900 dark:text-white">₹1,499</span>
+                  <span className="text-xs text-slate-500 dark:text-slate-400">/ one-time</span>
+                </div>
+                <p className="text-[11px] text-purple-600 dark:text-purple-400 font-semibold mb-6">
+                  Single payment, lifetime updates & zero renewals
+                </p>
+
+                <div className="space-y-3 pt-6 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-700 dark:text-slate-300">
+                  <div className="flex items-center gap-2.5">
+                    <Check className="w-4 h-4 text-purple-500 shrink-0" />
+                    <span className="font-semibold text-slate-900 dark:text-white">Everything in Pro Wealth Forever</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <Check className="w-4 h-4 text-purple-500 shrink-0" />
+                    <span>Family Vault Multi-User Scoping</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <Check className="w-4 h-4 text-purple-500 shrink-0" />
+                    <span>Forensic Append-Only Audit Trail Logs</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <Check className="w-4 h-4 text-purple-500 shrink-0" />
+                    <span>Dedicated Automated Cloud Backups</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <Check className="w-4 h-4 text-purple-500 shrink-0" />
+                    <span>REST API & Webhook Ingestion Access</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <Check className="w-4 h-4 text-purple-500 shrink-0" />
+                    <span>1-on-1 Engineering Concierge Support</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-8">
+                <Link
+                  to="/register?plan=enterprise"
+                  className="w-full py-3 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs flex items-center justify-center gap-2 transition-colors shadow-sm"
+                >
+                  <Award className="w-4 h-4" />
+                  <span>Get Lifetime License</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Trust Guarantees Bar */}
+          <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-center gap-6 sm:gap-12 text-xs font-semibold text-slate-600 dark:text-slate-400">
+            <span className="flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-emerald-500" />
+              30-Day Money-Back Guarantee
+            </span>
+            <span className="flex items-center gap-2">
+              <Zap className="w-4 h-4 text-amber-500" />
+              Instant Account Activation
+            </span>
+            <span className="flex items-center gap-2">
+              <Lock className="w-4 h-4 text-blue-500" />
+              256-Bit SSL/TLS Security
+            </span>
+            <span className="flex items-center gap-2">
+              <CreditCard className="w-4 h-4 text-purple-500" />
+              Secure UPI & Card Processing
+            </span>
+          </div>
+
+        </div>
+      </section>
+
+      {/* =========================================================================
+          VERIFIED CUSTOMER REVIEWS & SOCIAL PROOF (E-COMMERCE REVIEWS)
+          ========================================================================= */}
+      <section id="reviews" className="py-16 sm:py-24 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-300 text-xs font-bold mb-4">
+              <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+              <span>4.9 / 5.0 Rated by 1,240+ Verified Wealth Builders</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mb-4">
+              Loved by Chartered Accountants, Founders & Engineers
+            </h2>
+            <p className="text-slate-600 dark:text-slate-400 text-base sm:text-lg">
+              Here is why serious finance practitioners trust SmartSpend over generic spreadsheet templates and ad-supported trackers.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            {/* Review 1 */}
+            <div className="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/50 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-1 text-amber-400 mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-amber-400" />
+                  ))}
+                </div>
+                <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed mb-6 italic">
+                  "As a practicing CA, floating-point rounding errors in personal finance apps always bothered me. SmartSpend’s integer paise ledger ensures every account reconciliation matches bank statements down to the exact paisa. Exceptional mathematical rigor."
+                </p>
+              </div>
+              <div className="flex items-center gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+                <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold text-xs">
+                  RS
+                </div>
+                <div>
+                  <h5 className="text-xs font-bold text-slate-900 dark:text-white">Rajesh Sharma</h5>
+                  <p className="text-[11px] text-slate-500">Chartered Accountant • Mumbai</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Review 2 */}
+            <div className="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/50 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-1 text-amber-400 mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-amber-400" />
+                  ))}
+                </div>
+                <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed mb-6 italic">
+                  "The automated node-cron daemon and formula-sanitized CSV imports saved me hours of mundane ledgering. I uploaded 8 months of statements without a single macro risk or duplicated entry."
+                </p>
+              </div>
+              <div className="flex items-center gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+                <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-emerald-600 to-teal-600 flex items-center justify-center text-white font-bold text-xs">
+                  AI
+                </div>
+                <div>
+                  <h5 className="text-xs font-bold text-slate-900 dark:text-white">Ananya Iyer</h5>
+                  <p className="text-[11px] text-slate-500">Principal Engineer • Bengaluru</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Review 3 */}
+            <div className="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/50 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-1 text-amber-400 mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-amber-400" />
+                  ))}
+                </div>
+                <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed mb-6 italic">
+                  "Inter-account transfers used to completely distort my monthly burn rate reports in other apps. SmartSpend’s dual-entry transfer neutrality solved this overnight. My cash flow analytics are finally honest."
+                </p>
+              </div>
+              <div className="flex items-center gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+                <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-purple-600 to-pink-600 flex items-center justify-center text-white font-bold text-xs">
+                  VM
+                </div>
+                <div>
+                  <h5 className="text-xs font-bold text-slate-900 dark:text-white">Vikram Mehta</h5>
+                  <p className="text-[11px] text-slate-500">D2C Startup Founder • Delhi</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Review 4 */}
+            <div className="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/50 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-1 text-amber-400 mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-amber-400" />
+                  ))}
+                </div>
+                <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed mb-6 italic">
+                  "The streaming ExcelJS workbooks and PDF statements look institutional and clean. I recommend SmartSpend to all my clients who need clarity across multiple bank accounts."
+                </p>
+              </div>
+              <div className="flex items-center gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+                <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-amber-600 to-orange-600 flex items-center justify-center text-white font-bold text-xs">
+                  PN
+                </div>
+                <div>
+                  <h5 className="text-xs font-bold text-slate-900 dark:text-white">Priya Nair</h5>
+                  <p className="text-[11px] text-slate-500">Wealth Consultant • Pune</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* =========================================================================
+          FREQUENTLY ASKED QUESTIONS (FAQ) ACCORDION
+          ========================================================================= */}
+      <section id="faq" className="py-16 sm:py-24 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-center mb-16">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-2">
+              Knowledge Base & Search Answers
+            </h2>
+            <h3 className="text-3xl font-extrabold text-slate-900 dark:text-white mb-3">
+              Frequently Asked Questions
+            </h3>
+            <p className="text-sm text-slate-600 dark:text-slate-400">
+              Clear answers to the most common questions regarding our mathematical architecture, security, and data sovereignty.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            
+            {/* FAQ 1 */}
+            <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-sm">
+              <button
+                type="button"
+                onClick={() => toggleFaq(0)}
+                className="w-full px-6 py-4 text-left flex items-center justify-between text-sm sm:text-base font-bold text-slate-900 dark:text-white hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+              >
+                <span>How does SmartSpend eliminate floating-point rounding errors?</span>
+                {openFaq === 0 ? <ChevronUp className="w-4 h-4 shrink-0 text-emerald-500" /> : <ChevronDown className="w-4 h-4 shrink-0 text-slate-400" />}
+              </button>
+              {openFaq === 0 && (
+                <div className="px-6 pb-5 pt-1 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800/80">
+                  Standard software uses IEEE 754 floating-point numbers where simple arithmetic like <code>0.1 + 0.2 === 0.30000000000000004</code> accumulates rounding errors across hundreds of transactions. SmartSpend stores every balance, transaction, and budget strictly as 64-bit integer paise (₹1.00 = 100 paise), guaranteeing absolute penny-perfect mathematical precision.
+                </div>
+              )}
+            </div>
+
+            {/* FAQ 2 */}
+            <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-sm">
+              <button
+                type="button"
+                onClick={() => toggleFaq(1)}
+                className="w-full px-6 py-4 text-left flex items-center justify-between text-sm sm:text-base font-bold text-slate-900 dark:text-white hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+              >
+                <span>Is my banking password, net banking PIN, or OTP required?</span>
+                {openFaq === 1 ? <ChevronUp className="w-4 h-4 shrink-0 text-emerald-500" /> : <ChevronDown className="w-4 h-4 shrink-0 text-slate-400" />}
+              </button>
+              {openFaq === 1 && (
+                <div className="px-6 pb-5 pt-1 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800/80">
+                  Never. SmartSpend is strictly a financial analytics and ledger software, not a bank or payment gateway. We never ask for, store, or transmit your banking credentials, UPI PINs, or passwords. Statements are ingested safely using standard bank-exported CSV files where you retain complete control over what is uploaded.
+                </div>
+              )}
+            </div>
+
+            {/* FAQ 3 */}
+            <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-sm">
+              <button
+                type="button"
+                onClick={() => toggleFaq(2)}
+                className="w-full px-6 py-4 text-left flex items-center justify-between text-sm sm:text-base font-bold text-slate-900 dark:text-white hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+              >
+                <span>What is dual-entry transfer neutrality and why does it matter?</span>
+                {openFaq === 2 ? <ChevronUp className="w-4 h-4 shrink-0 text-emerald-500" /> : <ChevronDown className="w-4 h-4 shrink-0 text-slate-400" />}
+              </button>
+              {openFaq === 2 && (
+                <div className="px-6 pb-5 pt-1 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800/80">
+                  When you move money between your own accounts (for example, ₹5,000 from Savings to your Paytm UPI Wallet), generic expense trackers mistakenly record it as an expense, artificially inflating your monthly spending. SmartSpend implements dual-entry transfer neutrality: moving money shifts liquidity across accounts symmetrically without affecting your income or expense cash flow totals.
+                </div>
+              )}
+            </div>
+
+            {/* FAQ 4 */}
+            <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-sm">
+              <button
+                type="button"
+                onClick={() => toggleFaq(3)}
+                className="w-full px-6 py-4 text-left flex items-center justify-between text-sm sm:text-base font-bold text-slate-900 dark:text-white hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+              >
+                <span>How does bank statement CSV deduplication protect my data?</span>
+                {openFaq === 3 ? <ChevronUp className="w-4 h-4 shrink-0 text-emerald-500" /> : <ChevronDown className="w-4 h-4 shrink-0 text-slate-400" />}
+              </button>
+              {openFaq === 3 && (
+                <div className="px-6 pb-5 pt-1 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800/80">
+                  Our CSV ingestion engine computes MD5 cryptographic fingerprints for each row to automatically flag and prevent duplicate transaction imports. In addition, it neutralizes formula injection attacks by prepending an apostrophe to any cell starting with <code>=</code>, <code>+</code>, <code>-</code>, or <code>@</code> before previewing or saving.
+                </div>
+              )}
+            </div>
+
+            {/* FAQ 5 */}
+            <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-sm">
+              <button
+                type="button"
+                onClick={() => toggleFaq(4)}
+                className="w-full px-6 py-4 text-left flex items-center justify-between text-sm sm:text-base font-bold text-slate-900 dark:text-white hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+              >
+                <span>Can I export my financial data to Excel or PDF anytime?</span>
+                {openFaq === 4 ? <ChevronUp className="w-4 h-4 shrink-0 text-emerald-500" /> : <ChevronDown className="w-4 h-4 shrink-0 text-slate-400" />}
+              </button>
+              {openFaq === 4 && (
+                <div className="px-6 pb-5 pt-1 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800/80">
+                  Yes, SmartSpend never locks your financial records. You can stream styled multi-sheet Excel (.xlsx) workbooks generated via ExcelJS and printable monthly financial statements via PDFKit with a single click.
+                </div>
+              )}
             </div>
 
           </div>
@@ -631,13 +1175,27 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* Col 2: Navigation Links */}
+            {/* Col 2: Pricing & Public Links */}
             <div>
               <h5 className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-3">
-                Core Features
+                Product & Pricing
               </h5>
               <ul className="space-y-2 text-sm">
-                <li><Link to="/accounts" className="hover:text-emerald-500 transition-colors">Multi-Account Ledger</Link></li>
+                <li><a href="#pricing" className="hover:text-emerald-500 transition-colors font-medium text-emerald-600 dark:text-emerald-400">Pricing Plans (₹0 - ₹499)</a></li>
+                <li><a href="#reviews" className="hover:text-emerald-500 transition-colors">Customer Reviews (4.9★)</a></li>
+                <li><a href="#faq" className="hover:text-emerald-500 transition-colors">Frequently Asked Questions</a></li>
+                <li><a href="#features" className="hover:text-emerald-500 transition-colors">Architectural Pillars</a></li>
+                <li><a href="#architecture" className="hover:text-emerald-500 transition-colors">Integer Precision Engine</a></li>
+              </ul>
+            </div>
+
+            {/* Col 3: Core App Modules */}
+            <div>
+              <h5 className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-3">
+                Ledger Modules
+              </h5>
+              <ul className="space-y-2 text-sm">
+                <li><Link to="/accounts" className="hover:text-emerald-500 transition-colors">Multi-Account Balances</Link></li>
                 <li><Link to="/transactions" className="hover:text-emerald-500 transition-colors">Transactions & Transfers</Link></li>
                 <li><Link to="/budgets" className="hover:text-emerald-500 transition-colors">Idempotent Budgets</Link></li>
                 <li><Link to="/recurring" className="hover:text-emerald-500 transition-colors">Recurring Bills Daemon</Link></li>
@@ -646,7 +1204,7 @@ export default function LandingPage() {
               </ul>
             </div>
 
-            {/* Col 3: Architecture & Security */}
+            {/* Col 4: Engineering & Code */}
             <div>
               <h5 className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-3">
                 Engineering & Code

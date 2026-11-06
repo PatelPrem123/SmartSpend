@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAuthStore } from '../store/authStore';
 import { User, Lock, Save, AlertCircle, CheckCircle2, Loader2, IndianRupee } from 'lucide-react';
 import { parseRupeesToPaise, formatCurrency } from '../utils/formatters';
+import SEO from '../components/common/SEO';
 
 export default function SettingsPage() {
   const { user, updateProfile, changePassword, isLoading, error, clearError } = useAuthStore();
@@ -53,6 +54,10 @@ export default function SettingsPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
+      <SEO
+        title="Account & Profile Security Settings"
+        description="Manage your profile, password security, currency preferences, and active session tokens."
+      />
       <div>
         <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
           Account & Profile Settings

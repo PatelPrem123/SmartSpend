@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useRecurringStore } from '../store/recurringStore';
 import { useAccountStore } from '../store/accountStore';
 import { useCategoryStore } from '../store/categoryStore';
+import SEO from '../components/common/SEO';
 import {
   Calendar,
   Clock,
@@ -220,6 +221,10 @@ export default function RecurringPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-in fade-in duration-300">
+      <SEO
+        title="Automated Recurring Bills & Subscription Daemon"
+        description="Daily node-cron recurring transaction processor with leap-year forward clamping and zero duplicate defense."
+      />
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
         <div>

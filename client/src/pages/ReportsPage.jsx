@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import SEO from '../components/common/SEO';
 import {
   FileText,
   FileSpreadsheet,
@@ -148,6 +149,10 @@ export default function ReportsPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-fade-in">
+      <SEO
+        title="Financial Statements & Annual Reports"
+        description="Audit-grade multi-sheet Excel workbooks, printable PDF statements, and 12-month net cash flow analytics."
+      />
       {/* Header & Export Actions */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-6">
         <div>

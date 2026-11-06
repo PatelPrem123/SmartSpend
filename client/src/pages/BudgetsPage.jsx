@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useBudgetStore } from '../store/budgetStore';
 import { useCategoryStore } from '../store/categoryStore';
+import SEO from '../components/common/SEO';
 import {
   Plus,
   Trash2,
@@ -175,6 +176,10 @@ export default function BudgetsPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+      <SEO
+        title="Category Budgets & Spending Limits"
+        description="Set proactive category spending limits with an idempotent 4-tier threshold alert engine (50%, 75%, 90%, 100%)."
+      />
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
         <div>

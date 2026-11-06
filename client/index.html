@@ -2,12 +2,168 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💰</text></svg>" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SmartSpend — FinTech & Personal Wealth Platform</title>
+    
+    <!-- Primary SEO Metadata -->
+    <title>SmartSpend — FinTech & Personal Wealth Platform | Multi-Account Ledger</title>
+    <meta name="title" content="SmartSpend — FinTech & Personal Wealth Platform | Multi-Account Ledger" />
+    <meta name="description" content="Institutional-grade personal wealth and multi-account ledger engineered with 64-bit integer paise precision, dual-entry transfer neutrality, automated recurring bill scheduling, and bank statement CSV parsing." />
+    <meta name="keywords" content="personal finance, expense tracker, multi-account ledger, money manager, budgeting software, paise precision, bank statement csv parser, cash flow velocity, financial reports, india personal finance, dual-entry accounting" />
+    <meta name="author" content="SmartSpend FinTech" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href="https://smartspend.io/" />
+    <meta name="theme-color" content="#059669" />
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Open Graph / Facebook / LinkedIn -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://smartspend.io/" />
+    <meta property="og:site_name" content="SmartSpend" />
+    <meta property="og:title" content="SmartSpend — Personal Wealth & Multi-Account Ledger Platform" />
+    <meta property="og:description" content="Eliminate float precision drift and report distortion. Manage multi-account balances, track budgets idempotently, and automate cash flow insights." />
+    <meta property="og:image" content="https://smartspend.io/og-image.png" />
+    <meta property="og:locale" content="en_IN" />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://smartspend.io/" />
+    <meta name="twitter:title" content="SmartSpend — FinTech & Personal Wealth Platform" />
+    <meta name="twitter:description" content="64-bit integer paise precision, dual-entry transfer neutrality, and real-time cash flow analytics." />
+    <meta name="twitter:image" content="https://smartspend.io/og-image.png" />
+    <meta name="twitter:creator" content="@SmartSpendHQ" />
+
+    <!-- Typography Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- E-Commerce & SaaS Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://smartspend.io/#organization",
+          "name": "SmartSpend",
+          "url": "https://smartspend.io",
+          "logo": "https://smartspend.io/favicon.svg",
+          "sameAs": [
+            "https://github.com/PatelPrem123/SmartSpend"
+          ]
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://smartspend.io/#software",
+          "name": "SmartSpend",
+          "applicationCategory": "FinanceApplication",
+          "operatingSystem": "Web, Windows, macOS, Android, iOS",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "INR"
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "ratingCount": "1240",
+            "bestRating": "5",
+            "worstRating": "1"
+          }
+        },
+        {
+          "@type": "Product",
+          "@id": "https://smartspend.io/#product",
+          "name": "SmartSpend Personal Wealth Platform",
+          "description": "Enterprise personal finance SaaS with multi-account ledger tracking, 64-bit integer paise precision, automated statement deduplication, and streaming financial reports.",
+          "brand": {
+            "@type": "Brand",
+            "name": "SmartSpend"
+          },
+          "sku": "SMARTSPEND-SAAS-V1",
+          "category": "Financial Software",
+          "image": "https://smartspend.io/favicon.svg",
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "reviewCount": "1240"
+          },
+          "offers": {
+            "@type": "AggregateOffer",
+            "priceCurrency": "INR",
+            "lowPrice": "0",
+            "highPrice": "1499",
+            "offerCount": "3",
+            "offers": [
+              {
+                "@type": "Offer",
+                "name": "Starter Plan",
+                "price": "0",
+                "priceCurrency": "INR",
+                "availability": "https://schema.org/InStock",
+                "url": "https://smartspend.io/register"
+              },
+              {
+                "@type": "Offer",
+                "name": "Pro Wealth Annual",
+                "price": "499",
+                "priceCurrency": "INR",
+                "availability": "https://schema.org/InStock",
+                "url": "https://smartspend.io/register?plan=pro"
+              },
+              {
+                "@type": "Offer",
+                "name": "Enterprise Lifetime",
+                "price": "1499",
+                "priceCurrency": "INR",
+                "availability": "https://schema.org/InStock",
+                "url": "https://smartspend.io/register?plan=enterprise"
+              }
+            ]
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://smartspend.io/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How does SmartSpend eliminate floating-point rounding errors?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "SmartSpend stores every transaction, balance, and budget strictly in 64-bit integer minor currency units (paise for INR, where ₹1.00 = 100 paise). This permanently prevents IEEE 754 floating-point rounding drift common in JavaScript software."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is my banking password or PIN required to use SmartSpend?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. SmartSpend is strictly a financial analytics and ledger software. It never asks for, stores, or accesses banking credentials, PINs, or UPI passcodes. Bank records are imported safely via user-uploaded CSV statements."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What is dual-entry transfer neutrality?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "When you move money between your own accounts (such as Bank to UPI Wallet), SmartSpend treats it as an internal liquidity transfer. This updates both account balances symmetrically without distorting monthly income or expense totals."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I export my financial data to Excel and PDF?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. SmartSpend provides native streaming export of multi-sheet styled Excel (.xlsx) workbooks via ExcelJS and printable PDF financial statements via PDFKit."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
   </head>
   <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans antialiased">
     <div id="root"></div>

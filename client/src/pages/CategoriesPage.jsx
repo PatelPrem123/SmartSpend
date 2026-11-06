@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useCategoryStore } from '../store/categoryStore';
+import SEO from '../components/common/SEO';
 import { 
   Plus, 
   Tag, 
@@ -102,6 +103,10 @@ export default function CategoriesPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <SEO
+        title="Category Taxonomy & Classifications"
+        description="Standard and custom category taxonomy for organizing personal income streams and expense budgets."
+      />
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>

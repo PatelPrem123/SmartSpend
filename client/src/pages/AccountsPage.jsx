@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAccountStore } from '../store/accountStore';
 import { formatCurrency, parseRupeesToPaise } from '../utils/formatters';
+import SEO from '../components/common/SEO';
 import { 
   Plus, 
   Wallet, 
@@ -113,6 +114,10 @@ export default function AccountsPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <SEO
+        title="Accounts & Multi-Wallet Liquidity"
+        description="Manage bank accounts, digital wallets, physical cash, and credit cards with exact integer opening balances."
+      />
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useGoalStore } from '../store/goalStore';
 import { useAccountStore } from '../store/accountStore';
+import SEO from '../components/common/SEO';
 import {
   Target,
   Plus,
@@ -180,6 +181,10 @@ export default function GoalsPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-fade-in">
+      <SEO
+        title="Savings Goals & Milestones"
+        description="Ring-fence wealth, track milestone contributions, and achieve personal financial targets with atomic balance deductions."
+      />
       {/* Header & Metrics */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-6">
         <div>

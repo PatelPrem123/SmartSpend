@@ -1,0 +1,21 @@
+# SmartSpend Production Robots Directive
+User-agent: *
+Allow: /
+Allow: /login
+Allow: /register
+
+# Protect private authenticated tenant routes from indexing
+Disallow: /api/
+Disallow: /dashboard
+Disallow: /transactions
+Disallow: /accounts
+Disallow: /budgets
+Disallow: /goals
+Disallow: /reports
+Disallow: /recurring
+Disallow: /import
+Disallow: /settings
+Disallow: /categories
+
+# Sitemap declaration
+Sitemap: https://smartspend.io/sitemap.xml

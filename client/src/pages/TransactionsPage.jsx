@@ -3,6 +3,7 @@ import { useTransactionStore } from '../store/transactionStore';
 import { useAccountStore } from '../store/accountStore';
 import { useCategoryStore } from '../store/categoryStore';
 import { formatCurrency, parseRupeesToPaise, formatDate, formatDateTime } from '../utils/formatters';
+import SEO from '../components/common/SEO';
 import {
   Plus,
   ArrowLeftRight,
@@ -205,6 +206,10 @@ export default function TransactionsPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <SEO
+        title="Ledger Transactions & Dual-Entry Transfers"
+        description="Record income, track expenses with integer minor paise precision, and execute dual-entry inter-account transfers."
+      />
       {/* Page Header & Action Buttons */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>

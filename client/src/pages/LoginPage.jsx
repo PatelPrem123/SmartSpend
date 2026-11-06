@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
+import SEO from '../components/common/SEO';
 import { Wallet, Lock, Mail, ArrowRight, AlertCircle, Loader2 } from 'lucide-react';
 
 export default function LoginPage() {
@@ -22,12 +23,17 @@ export default function LoginPage() {
   };
 
   const handleDemoLogin = () => {
-    setEmail('demo.user@smartspend.io');
-    setPassword('DemoPass123!');
+    setEmail('demo@smartspend.io');
+    setPassword('Password123!');
   };
 
   return (
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-4">
+      <SEO
+        title="Sign In to Your Account"
+        description="Access your secure SmartSpend multi-account ledger, real-time budget tracker, and cash flow velocity analytics."
+        canonical="https://smartspend.io/login"
+      />
       <div className="w-full max-w-md bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-8">
         <div className="text-center mb-8">
           <div className="inline-flex w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-700 items-center justify-center text-white shadow-lg shadow-emerald-500/20 mb-3">

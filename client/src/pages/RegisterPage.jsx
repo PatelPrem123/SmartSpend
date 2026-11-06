@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
+import SEO from '../components/common/SEO';
 import { Wallet, Lock, Mail, User, ArrowRight, AlertCircle, Loader2, Check } from 'lucide-react';
 
 export default function RegisterPage() {
@@ -25,6 +26,11 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-4">
+      <SEO
+        title="Create Free Account — Instant Access"
+        description="Join SmartSpend to manage your multi-account finances with 64-bit integer paise precision, automated statement ingestion, and zero float errors."
+        canonical="https://smartspend.io/register"
+      />
       <div className="w-full max-w-md bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-8">
         <div className="text-center mb-8">
           <div className="inline-flex w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-700 items-center justify-center text-white shadow-lg shadow-emerald-500/20 mb-3">
