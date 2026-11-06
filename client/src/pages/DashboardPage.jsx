@@ -34,6 +34,68 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 
+// Custom High-Contrast Tooltip for Cash Flow Velocity
+function CustomCashFlowTooltip({ active, payload, label }) {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-slate-900/95 backdrop-blur-md border border-slate-700/80 px-4 py-3 rounded-xl shadow-2xl text-xs z-50 space-y-1.5 min-w-[160px]">
+        <p className="font-bold text-slate-300 pb-1.5 border-b border-slate-800">
+          {label}
+        </p>
+        {payload.map((entry, index) => (
+          <div key={`flow-tip-${index}`} className="flex items-center justify-between gap-4">
+            <span className="flex items-center gap-1.5 text-slate-300 font-medium">
+              <span
+                className="w-2.5 h-2.5 rounded-full shrink-0"
+                style={{ backgroundColor: entry.color || entry.stroke }}
+              />
+              {entry.name}:
+            </span>
+            <span className="font-bold text-white tracking-wide">
+              ₹{Number(entry.value).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </span>
+          </div>
+        ))}
+      </div>
+    );
+  }
+  return null;
+}
+
+// Custom High-Contrast Tooltip for Category Spending Donut
+function CustomCategoryTooltip({ active, payload }) {
+  if (active && payload && payload.length) {
+    const data = payload[0];
+    const categoryName = data.name || data.payload?.name || 'Category';
+    const val = Number(data.value || 0);
+    const color = data.payload?.color || data.color || '#10b981';
+    const percentage = data.payload?.percentage;
+
+    return (
+      <div className="bg-slate-900/95 backdrop-blur-md border border-slate-700/80 px-4 py-3 rounded-xl shadow-2xl text-xs z-50 min-w-[150px]">
+        <div className="flex items-center gap-2 mb-1.5">
+          <span
+            className="w-2.5 h-2.5 rounded-full shrink-0 shadow-sm"
+            style={{ backgroundColor: color }}
+          />
+          <p className="font-semibold text-slate-200 truncate">{categoryName}</p>
+        </div>
+        <div className="flex items-baseline gap-2">
+          <span className="text-base font-extrabold text-white tracking-tight">
+            ₹{val.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          </span>
+          {percentage !== undefined && (
+            <span className="text-xs font-bold text-emerald-400 bg-emerald-950/60 px-1.5 py-0.5 rounded border border-emerald-800/60">
+              {percentage}%
+            </span>
+          )}
+        </div>
+      </div>
+    );
+  }
+  return null;
+}
+
 export default function DashboardPage() {
   const { user } = useAuthStore();
   const {
@@ -277,18 +339,7 @@ export default function DashboardPage() {
                     tick={{ fontSize: 11 }}
                     tickFormatter={(v) => `₹${(v / 1000).toFixed(0)}k`}
                   />
-                  <Tooltip
-                    formatter={(value) => [
-                      `₹${Number(value).toLocaleString('en-IN', { minimumFractionDigits: 2 })}`,
-                    ]}
-                    contentStyle={{
-                      backgroundColor: 'rgba(15, 23, 42, 0.95)',
-                      borderRadius: '12px',
-                      border: '1px solid #334155',
-                      color: '#fff',
-                      fontSize: '12px',
-                    }}
-                  />
+                  <Tooltip content={<CustomCashFlowTooltip />} />
                   <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
                   <Area
                     type="monotone"
@@ -348,18 +399,7 @@ export default function DashboardPage() {
                       />
                     ))}
                   </Pie>
-                  <Tooltip
-                    formatter={(value) => [
-                      `₹${Number(value).toLocaleString('en-IN', { minimumFractionDigits: 2 })}`,
-                    ]}
-                    contentStyle={{
-                      backgroundColor: 'rgba(15, 23, 42, 0.95)',
-                      borderRadius: '12px',
-                      border: '1px solid #334155',
-                      color: '#fff',
-                      fontSize: '12px',
-                    }}
-                  />
+                  <Tooltip content={<CustomCategoryTooltip />} />
                 </PieChart>
               </ResponsiveContainer>
             )}

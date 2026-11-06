@@ -28,6 +28,34 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
+// Custom High-Contrast Tooltip for Reports BarChart
+function CustomReportsBarTooltip({ active, payload, label }) {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-slate-900/95 backdrop-blur-md border border-slate-700/80 px-4 py-3 rounded-xl shadow-2xl text-xs z-50 space-y-1.5 min-w-[160px]">
+        <p className="font-bold text-slate-300 pb-1.5 border-b border-slate-800">
+          {label}
+        </p>
+        {payload.map((entry, index) => (
+          <div key={`rep-tip-${index}`} className="flex items-center justify-between gap-4">
+            <span className="flex items-center gap-1.5 text-slate-300 font-medium">
+              <span
+                className="w-2.5 h-2.5 rounded-full shrink-0"
+                style={{ backgroundColor: entry.color || entry.fill }}
+              />
+              {entry.name}:
+            </span>
+            <span className="font-bold text-white tracking-wide">
+              ₹{Number(entry.value).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </span>
+          </div>
+        ))}
+      </div>
+    );
+  }
+  return null;
+}
+
 export default function ReportsPage() {
   const currentYear = new Date().getFullYear();
   const [selectedYear, setSelectedYear] = useState(currentYear);
@@ -252,16 +280,7 @@ export default function ReportsPage() {
                 tick={{ fontSize: 11 }}
                 tickFormatter={(val) => `₹${(val / 1000).toFixed(0)}k`}
               />
-              <Tooltip
-                formatter={(val) => [`₹${val.toLocaleString('en-IN')}`, '']}
-                contentStyle={{
-                  backgroundColor: '#0f172a',
-                  borderRadius: '12px',
-                  border: '1px solid #334155',
-                  color: '#fff',
-                  fontSize: '12px',
-                }}
-              />
+              <Tooltip content={<CustomReportsBarTooltip />} />
               <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
               <Bar dataKey="Income" fill="#10b981" radius={[4, 4, 0, 0]} />
               <Bar dataKey="Expenses" fill="#f43f5e" radius={[4, 4, 0, 0]} />
