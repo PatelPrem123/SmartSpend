@@ -124,3 +124,22 @@ npm run dev:client
 # Execute automated financial test suites
 npm run test
 ```
+
+---
+
+## 🔑 Pre-Configured Demo Accounts
+
+For immediate evaluation and testing without manual setup:
+
+| Role | Email | Password | Pre-Seeded Context |
+| :--- | :--- | :--- | :--- |
+| **Normal User** | `demo@smartspend.io` | `Password123!` | 3 active accounts (HDFC, ICICI, Paytm), transactions, budgets, goals, recurring rules. |
+| **Administrator** | `admin@smartspend.io` | `Password123!` | System administrator privileges and platform telemetry access. |
+
+---
+
+## 🌐 Official GitHub Repository
+
+- **Repository:** [https://github.com/PatelPrem123/SmartSpend](https://github.com/PatelPrem123/SmartSpend)
+- **Git Clone:** `git clone https://github.com/PatelPrem123/SmartSpend.git`
+- **Main Branch:** `main`

@@ -15,11 +15,14 @@
 | Attribute | System Specification |
 | :--- | :--- |
 | **Project Name** | SmartSpend (Personal Finance Platform v1.0.0) |
+| **Official Repository** | [https://github.com/PatelPrem123/SmartSpend](https://github.com/PatelPrem123/SmartSpend) (Public, Branch: `main`) |
 | **System Architecture** | Decoupled Modern FinTech SaaS (RESTful API v1 + Background Cron Scheduler + Reporting Engine) |
-| **Frontend Tech Stack** | React 18, Vite, React Router v6, Tailwind CSS, TanStack Query, Zustand, Recharts |
+| **Frontend Tech Stack** | React 18, Vite, React Router v6 (v7 Future Flags Opt-In), Tailwind CSS, TanStack Query, Zustand, Recharts |
 | **Backend Tech Stack** | Node.js (LTS), Express.js, JWT, Bcrypt, Zod, node-cron, Papa Parse, ExcelJS, PDFKit |
 | **Database Layer** | MongoDB 7.x with Mongoose ODM (User-Scoped Isolation, Compound Indexes, Transactions) |
 | **Currency Precision** | Integer Minor Units (Paise for INR: ₹1,250.50 = 125050 paise; Zero Floating-Point Rounding Errors) |
+| **Demo User Account** | `demo@smartspend.io` / `Password123!` (Pre-seeded with 3 active accounts, budgets, goals, transactions) |
+| **Demo Admin Account** | `admin@smartspend.io` / `Password123!` (System Administrator role with platform audit access) |
 | **Target Capabilities** | Multi-Account Balances, Dual-Entry Account Transfers, Category Budgets, Recurring Cron Daemon, CSV Import & Excel Export |
 | **Test Verification** | 12 Test Suites, 112 Tests Passed (100% Pass Rate, Exit Code 0, Vitest + Supertest) |
 | **Code Audit Rating** | 10/10 (A+) across Logic, Security, Performance, Edge Cases, and Code Quality (0 Defects Remaining) |
@@ -42,6 +45,9 @@
 - [Chapter 11: Enterprise Security Hardening & Financial Threat Defense](#chapter-11-enterprise-security-hardening--financial-threat-defense)
 - [Chapter 12: QA Automation & Financial Correctness Test Suite](#chapter-12-qa-automation--financial-correctness-test-suite)
 - [Chapter 13: 13-Phase Engineering Implementation Roadmap](#chapter-13-13-phase-engineering-implementation-roadmap)
+- [Chapter 14: Pre-Configured Demo Environments & Evaluator Credentials](#chapter-14-pre-configured-demo-environments--evaluator-credentials)
+- [Chapter 15: Frontend UX Engineering, Error Boundaries & High-Contrast Visuals](#chapter-15-frontend-ux-engineering-error-boundaries--high-contrast-visuals)
+- [Chapter 16: GitHub Repository, Continuous Delivery & Maintenance Guide](#chapter-16-github-repository-continuous-delivery--maintenance-guide)
 
 ---
 
@@ -385,3 +391,86 @@ The platform is complete when:
 7. User uploads bank statement CSV → system sanitizes formula injection, flags duplicate transactions, and batch-imports verified rows.
 8. Interactive Recharts dashboard renders dynamic cash flow curves and category distribution derived exclusively from actual database records.
 9. All financial calculations pass automated precision and stress testing suites.
+
+---
+
+## Chapter 14: Pre-Configured Demo Environments & Evaluator Credentials
+
+To facilitate immediate manual evaluation, QA testing, and stakeholder demonstration without requiring manual data entry, SmartSpend comes pre-seeded with two dedicated personas:
+
+### 1. Normal User Persona (Personal Wealth Demo)
+* **Email:** `demo@smartspend.io`
+* **Password:** `Password123!`
+* **Role:** `user`
+* **Pre-Seeded Financial State:**
+  * **Accounts (3 Active Accounts):**
+    * *HDFC Salary Bank:* ₹85,000.00
+    * *ICICI Emergency Savings:* ₹25,000.00
+    * *Paytm / UPI Wallet:* ₹10,250.00
+    * *Total Liquidity:* ₹1,20,250.00 across all accounts.
+  * **Transactions:** Includes verified salary income, utility bills, groceries, dining expenses, and inter-account transfers demonstrating transfer neutrality.
+  * **Budgets:** Active monthly category budgets with real-time progress bars (Housing, Food & Dining, Entertainment, Utilities).
+  * **Savings Goals:** Active goals including Emergency Corpus and Vacation Fund with contribution ledgers and milestone progress.
+  * **Recurring Rules:** Active recurring rules for broadband internet and OTT streaming subscriptions managed by the daily cron daemon.
+
+### 2. System Administrator Persona
+* **Email:** `admin@smartspend.io`
+* **Password:** `Password123!`
+* **Role:** `admin`
+* **Privileges:** System-wide diagnostics, audit log inspection, server health verification, and platform telemetry.
+
+---
+
+## Chapter 15: Frontend UX Engineering, Error Boundaries & High-Contrast Visuals
+
+SmartSpend's frontend presentation tier incorporates enterprise design standards and defensive UI resilience:
+
+### 1. Modern Enterprise Landing Page (`LandingPage.jsx`)
+* **Route:** `/` (for unauthenticated visitors)
+* **Architecture Callouts:** Displays institutional features—64-bit integer paise precision, dual-entry transfer neutrality, BOLA isolation, and automated cron deduplication.
+* **Direct Actions:** Clear "Create Free Account" and "Sign In" CTA buttons, accompanied by a dynamic light/dark mode theme toggle.
+
+### 2. Luxury Header Navbar & Mobile Drawer
+* **Compact Luxury Layout:** 6 core links (Dashboard, Transactions, Budgets, Goals, Reports, Recurring) rendered with active route pills.
+* **"More Tools" Dropdown:** Groups secondary utilities (Categories taxonomy, Bank Statement CSV Import, Profile Settings) to completely eliminate horizontal navbar clipping on medium/tablet viewports.
+* **Responsive Mobile Drawer:** Smooth slide-out mobile drawer triggered by an accessible hamburger button on mobile devices.
+* **User Profile Dropdown:** Displays user identity, role badge (`user` / `admin`), and one-click session sign-out.
+
+### 3. Custom High-Contrast Recharts Tooltips
+* **Dark Background Legibility:** Replaces default Recharts tooltips with custom JSX components styled with Tailwind CSS (`bg-slate-900/95`, `backdrop-blur-md`, `border-slate-700/80`):
+  * **`CustomCategoryTooltip` (Category Donut):** Renders colored category indicator, category title, bright white formatted amount (`₹25,000.00`), and emerald percentage badge (`60%`).
+  * **`CustomCashFlowTooltip` (Area Chart):** High-contrast multi-series tooltip displaying both Income and Expense curves with synchronized timestamps.
+  * **`CustomReportsBarTooltip` (Reports Bar Chart):** High-contrast breakdown for annual financial aggregates.
+
+### 4. React 18 & Router v7 Future-Proofing
+* **Future Flags Opt-In:** `<BrowserRouter>` configured with `future={{ v7_startTransition: true, v7_relativeSplatPath: true }}` to eliminate React Router v6-to-v7 console deprecation warnings.
+* **Global Error Boundary (`ErrorBoundary.jsx`):** Wraps application routes in a defensive React error boundary component, catching runtime exceptions gracefully with a formatted recovery screen and page reload trigger.
+* **Defensive Data Handling:** All reports endpoints enforce array safety (`res.data?.distribution?.items || []`) and object validation to prevent uncaught runtime type errors.
+
+---
+
+## Chapter 16: GitHub Repository, Continuous Delivery & Maintenance Guide
+
+### Official Repository Details
+* **GitHub URL:** [https://github.com/PatelPrem123/SmartSpend](https://github.com/PatelPrem123/SmartSpend)
+* **Remote Git Origin:** `https://github.com/PatelPrem123/SmartSpend.git`
+* **Default Branch:** `main`
+* **Visibility:** Public
+
+### Development & Build Commands
+```powershell
+# 1. Install root, server, and client dependencies
+npm install
+npm --prefix server install
+npm --prefix client install
+
+# 2. Run automated test suites (12 suites, 112 tests)
+npm test
+
+# 3. Build optimized frontend client (0 bundle warnings)
+npm --prefix client run build
+
+# 4. Start local development daemons
+npm run dev:server  # Node backend on http://localhost:5000
+npm run dev:client  # Vite frontend on http://localhost:5173
+```
